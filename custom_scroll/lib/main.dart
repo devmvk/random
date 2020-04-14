@@ -10,10 +10,7 @@ class MyApp extends StatelessWidget {
       title: 'Material App',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('Material App Bar'),
-        ),
-        body: HomePage()
+        body: SafeArea(child: HomePage())
       ),
     );
   }
