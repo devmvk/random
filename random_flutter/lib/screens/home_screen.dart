@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:random_flutter/bloc/home_bloc.dart';
 import 'package:random_flutter/resources/app_colors.dart';
+import 'package:random_flutter/screens/color_controller_screen.dart';
 import 'package:random_flutter/sevices/data_service.dart';
 
 class HomePage extends StatelessWidget {
@@ -19,7 +20,6 @@ class HomePage extends StatelessWidget {
     ) {
       return Provider<HomeBloc>(
         create: (BuildContext context) => HomeBloc(service: service),
-        dispose: (BuildContext context, HomeBloc _) => _.dispose(),
         child: Consumer(builder: (
           BuildContext _,
           HomeBloc bloc,
@@ -35,25 +35,24 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<Color>(
-      stream: homeBloc.colorStream,
-      initialData: AppColors.salmon,
-      builder: (BuildContext context, AsyncSnapshot<Color> snapshot) {
-        return Scaffold(
-          backgroundColor: snapshot.data,
-          body: Container(
-            //color: snapshot.data,
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () async {
-              await homeBloc.getColorFromApiResponse();
+    return Scaffold(
+      body: Container(
+        child: Center(
+          child: RaisedButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ColorControllerScreen(
+                    bloc: homeBloc,
+                  ),
+                ),
+              );
             },
-            child: Container(
-              child: Icon(Icons.refresh),
-            ),
+            child: Text("Go to random color screen", style: TextStyle(color: Colors.white),),
+            color: Colors.purple,
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
