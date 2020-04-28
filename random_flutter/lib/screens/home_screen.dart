@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:random_flutter/bloc/home_bloc.dart';
 import 'package:random_flutter/resources/app_colors.dart';
@@ -40,9 +41,13 @@ class HomePage extends StatelessWidget {
       initialData: AppColors.salmon,
       builder: (BuildContext context, AsyncSnapshot<Color> snapshot) {
         return Scaffold(
-          backgroundColor: snapshot.data,
-          body: Container(
-            //color: snapshot.data,
+          //backgroundColor: snapshot.data,
+          body: Center(
+            child: Container(
+              child: SvgPicture.asset("assets/time.svg",
+               color: snapshot.data,
+              ),
+            ),
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () async {
