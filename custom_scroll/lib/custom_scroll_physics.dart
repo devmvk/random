@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
 class CustomScrollPhysics extends ScrollPhysics {
-  final double itemDimension;
+  final double customScrollExtent;
 
-  CustomScrollPhysics({this.itemDimension, ScrollPhysics parent})
+  CustomScrollPhysics({this.customScrollExtent, ScrollPhysics parent})
       : super(parent: parent);
 
   @override
   CustomScrollPhysics applyTo(ScrollPhysics ancestor) {
     return CustomScrollPhysics(
-        itemDimension: itemDimension, parent: buildParent(ancestor));
+        customScrollExtent: customScrollExtent, parent: buildParent(ancestor));
   }
 
   double _getPage(ScrollPosition position) {
-    return position.pixels / itemDimension;
+    return position.pixels / customScrollExtent;
   }
 
   double _getPixels(double page) {
-    return page * itemDimension;
+    return page * customScrollExtent;
   }
 
   double _getTargetPixels(
@@ -49,19 +49,18 @@ class CustomScrollPhysics extends ScrollPhysics {
 
     @override
   double applyBoundaryConditions(ScrollMetrics position, double value) {
-    print("value $value    pixels ${position.pixels}");
     if (value < position.pixels && position.pixels <= position.minScrollExtent) // underscroll
       return value - position.pixels;
     if (position.maxScrollExtent <= position.pixels && position.pixels < value) // overscroll
       return value - position.pixels;
-    if (itemDimension!=null && itemDimension <= position.pixels && position.pixels < value) // overscroll
+    if (customScrollExtent!=null && customScrollExtent <= position.pixels && position.pixels < value) // overscroll
       return value - position.pixels;
     if (value < position.minScrollExtent && position.minScrollExtent < position.pixels) // hit top edge
       return value - position.minScrollExtent;
     if (position.pixels < position.maxScrollExtent && position.maxScrollExtent < value) // hit bottom edge
       return value - position.maxScrollExtent;
-    if (itemDimension!=null && position.pixels < itemDimension && position.maxScrollExtent < value) // hit bottom edge
-      return value - itemDimension;
+    if (customScrollExtent!=null && position.pixels < customScrollExtent && position.maxScrollExtent < value) // hit bottom edge
+      return value - customScrollExtent;
     return 0.0;
   }
 
